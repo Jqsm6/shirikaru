@@ -34,3 +34,12 @@ func (is *ItemService) Get(ctx context.Context, id int) (*model.Anime, error) {
 
 	return anime, nil
 }
+
+func (is *ItemService) Delete(ctx context.Context, id int) error {
+	err := is.repo.Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -9,6 +9,7 @@ import (
 
 type item interface {
 	Upload(ctx context.Context, anime *model.Anime) (int, error)
+	Delete(ctx context.Context, id int) error
 	Get(ctx context.Context, id int) (*model.Anime, error)
 }
 

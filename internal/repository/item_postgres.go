@@ -49,3 +49,15 @@ func (repo *ItemPostgres) Get(ctx context.Context, id int) (*model.Anime, error)
 
 	return &a, nil
 }
+
+func (repo *ItemPostgres) Delete(ctx context.Context, id int) error {
+	query := "DELETE FROM anime_list WHERE anime_id = $1"
+
+	_, err := repo.db.ExecContext(ctx, query, id)
+	if err != nil {
+		log.Err(err).Msg("repository level")
+		return err
+	}
+
+	return nil
+}

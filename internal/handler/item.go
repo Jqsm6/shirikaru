@@ -43,3 +43,20 @@ func (uh *Handler) get(c *gin.Context) {
 
 	c.JSON(http.StatusOK, anime)
 }
+
+func (uh *Handler) delete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		uh.log.Err(err).Msg("controller level")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed convert string to int"})
+		return
+	}
+
+	err = uh.srv.Delete(c, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete anime"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status:": "successfully", "id": id})
+}

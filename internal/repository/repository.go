@@ -11,6 +11,7 @@ import (
 
 type itemRepo interface {
 	Upload(context.Context, *model.DBAnime) (int, error)
+	Delete(ctx context.Context, id int) error
 	Get(ctx context.Context, id int) (*model.Anime, error)
 }
 
