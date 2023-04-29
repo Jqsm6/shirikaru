@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/rs/zerolog"
+
 	"shirikaru-rest-api/config"
 )
 
@@ -17,9 +18,9 @@ var (
 	once   sync.Once
 )
 
-func GetLogger() *Logger {
+func GetLogger(cfg *config.Config) *Logger {
 	once.Do(func() {
-		loggingLevel := config.GetConfig().Server.LoggingLevel
+		loggingLevel := cfg.Server.LoggingLevel
 		zeroLogger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
 		switch loggingLevel {

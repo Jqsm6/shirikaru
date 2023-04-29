@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"shirikaru-rest-api/config"
-	"shirikaru-rest-api/pkg/logger"
+	"shirikaru-rest-api/internal/logger"
 )
 
 type Server struct {
@@ -23,10 +23,7 @@ func NewServer(router *gin.Engine, logger *logger.Logger) *Server {
 	}
 }
 
-func (s *Server) Run() {
-	logger := logger.GetLogger()
-	cfg := config.GetConfig()
-
+func (s *Server) Run(cfg *config.Config, log *logger.Logger) {
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port))
 	if err != nil {
 		panic(err)
@@ -38,5 +35,5 @@ func (s *Server) Run() {
 		WriteTimeout: cfg.Server.WriteTimeout,
 	}
 
-	logger.Fatal().Err(server.Serve(listener))
+	log.Fatal().Err(server.Serve(listener))
 }

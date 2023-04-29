@@ -3,18 +3,18 @@ package model
 type Anime struct {
 	ID               int    `json:"id"`
 	Title            string `json:"title"`
-	AlternativeTitle string `json:"alternative_title"`
+	AlternativeTitle string `json:"alternativeTitle"`
 	Description      string `json:"description"`
-	ProductionStatus string `json:"production_status"`
+	ProductionStatus string `json:"productionStatus"`
 	Picture          string `json:"picture"`
 	Episode          int    `json:"episode"`
 }
 
 type DBAnime struct {
 	Title            string `pg:"title,notnull"`
-	AlternativeTitle string `pg:"alternative_title,notnull"`
-	Description      string `pg:"description,notnull"`
-	ProductionStatus string `pg:"production_status,notnull"`
+	AlternativeTitle string `pg:"alternativeTitle"`
+	Description      string `pg:"description"`
+	ProductionStatus string `pg:"productionStatus,notnull"`
 	Picture          string `pg:"picture,notnull"`
 	Episode          int    `pg:"episode,notnull"`
 }

@@ -5,8 +5,9 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/rs/zerolog/log"
+
+	"shirikaru-rest-api/internal/logger"
 	"shirikaru-rest-api/internal/model"
-	"shirikaru-rest-api/pkg/logger"
 )
 
 type ItemPostgres struct {
@@ -22,7 +23,7 @@ func NewItemPostgres(db *sqlx.DB, log *logger.Logger) *ItemPostgres {
 }
 
 func (repo *ItemPostgres) Upload(ctx context.Context, a *model.DBAnime) (int, error) {
-	query := "INSERT INTO anime (title, alternative_title, description, production_status, picture, episode) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_"
+	query := "INSERT INTO anime_list (title, alternative_title, description, production_status, picture, episode) VALUES ($1, $2, $3, $4, $5, $6) RETURNING anime_id"
 
 	var id int
 	err := repo.db.QueryRowContext(ctx, query, a.Title, a.AlternativeTitle, a.Description,
@@ -36,7 +37,7 @@ func (repo *ItemPostgres) Upload(ctx context.Context, a *model.DBAnime) (int, er
 }
 
 func (repo *ItemPostgres) Get(ctx context.Context, id int) (*model.Anime, error) {
-	query := "SELECT * FROM anime WHERE id_ = $1"
+	query := "SELECT * FROM anime_list WHERE anime_id = $1"
 
 	var a model.Anime
 	err := repo.db.QueryRowContext(ctx, query, id).Scan(&a.ID, &a.Title, &a.AlternativeTitle, &a.Description, &a.ProductionStatus,

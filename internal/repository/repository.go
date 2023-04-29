@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 
-	"shirikaru-rest-api/pkg/logger"
-
 	"github.com/jmoiron/sqlx"
+
+	"shirikaru-rest-api/internal/logger"
 	"shirikaru-rest-api/internal/model"
 )
 

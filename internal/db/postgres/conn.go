@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	"shirikaru-rest-api/config"
-
 	_ "github.com/jackc/pgx/stdlib" // pgx driver
 	"github.com/jmoiron/sqlx"
+
+	"shirikaru-rest-api/config"
 )
 
 const (
@@ -17,8 +17,7 @@ const (
 	connMaxIdleTime = 20
 )
 
-func NewPsqlDB() (*sqlx.DB, error) {
-	cfg := config.GetConfig()
+func NewPsqlDB(cfg *config.Config) (*sqlx.DB, error) {
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		cfg.Postgres.PostgresqlHost,
 		cfg.Postgres.PostgresqlPort,

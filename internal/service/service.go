@@ -3,9 +3,8 @@ package service
 import (
 	"context"
 
-	"shirikaru-rest-api/internal/repository"
-
 	"shirikaru-rest-api/internal/model"
+	"shirikaru-rest-api/internal/repository"
 )
 
 type item interface {

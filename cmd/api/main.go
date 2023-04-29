@@ -1,32 +1,39 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
+
+	"shirikaru-rest-api/config"
+	"shirikaru-rest-api/internal/db/postgres"
 	"shirikaru-rest-api/internal/handler"
 	server "shirikaru-rest-api/internal/httpserver"
+	"shirikaru-rest-api/internal/logger"
 	"shirikaru-rest-api/internal/repository"
 	"shirikaru-rest-api/internal/service"
-	"shirikaru-rest-api/pkg/db/postgres"
-	"shirikaru-rest-api/pkg/logger"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	logger := logger.GetLogger()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		// TODO: Add closer
+		panic(err)
+	}
+
+	log := logger.GetLogger(cfg)
 
 	router := gin.New()
 
-	db, err := postgres.NewPsqlDB()
+	db, err := postgres.NewPsqlDB(cfg)
 	if err != nil {
 		panic(err)
 	}
 
-	server := server.NewServer(router, logger)
-	repos := repository.NewRepository(db, logger)
+	httpserver := server.NewServer(router, log)
+	repos := repository.NewRepository(db, log)
 	srv := service.NewServices(repos)
-	handlers := handler.NewHandler(srv, logger)
+	handlers := handler.NewHandler(srv, log)
 
 	handlers.InitRoutes(router)
 
-	server.Run()
+	httpserver.Run(cfg, log)
 }

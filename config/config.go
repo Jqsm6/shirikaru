@@ -9,20 +9,19 @@ import (
 
 type Config struct {
 	Server struct {
-		Host         string        `yaml:"Host"`
-		Port         string        `yaml:"Port"`
-		LoggingLevel string        `yaml:"LoggingLevel"`
-		ReadTimeout  time.Duration `yaml:"ReadTimeout"`
-		WriteTimeout time.Duration `yaml:"WriteTimeout"`
+		Host         string        `yaml:"host"`
+		Port         string        `yaml:"port"`
+		LoggingLevel string        `yaml:"loggingLevel"`
+		ReadTimeout  time.Duration `yaml:"readTimeout"`
+		WriteTimeout time.Duration `yaml:"writeTimeout"`
 	} `yaml:"server"`
 	Postgres struct {
-		PostgresqlHost     string `yaml:"PostgresqlHost"`
-		PostgresqlPort     string `yaml:"PostgresqlPort"`
-		PostgresqlUser     string `yaml:"PostgresqlUser"`
-		PostgresqlPassword string `yaml:"PostgresqlPassword"`
-		PostgresqlDbname   string `yaml:"PostgresqlDbname"`
-		PostgresqlSSLMode  bool   `yaml:"PostgresqlSSLMode"`
-		PgDriver           string `yaml:"PgDriver"`
+		PostgresqlHost     string `yaml:"postgresqlHost"`
+		PostgresqlPort     string `yaml:"postgresqlPort"`
+		PostgresqlUser     string `yaml:"postgresqlUser"`
+		PostgresqlPassword string `yaml:"postgresqlPassword"`
+		PostgresqlDbname   string `yaml:"postgresqlDbname"`
+		PgDriver           string `yaml:"pgDriver"`
 	} `yaml:"postgres"`
 }
 
@@ -31,17 +30,17 @@ var (
 	once   sync.Once
 )
 
-func GetConfig() *Config {
+func GetConfig() (*Config, error) {
+	var err error
 	once.Do(func() {
 		config = &Config{}
 
-		err := cleanenv.ReadConfig("config.yml", config)
-		if err != nil {
-			help, _ := cleanenv.GetDescription(config, nil)
-			println(help)
-			panic(err)
-		}
+		err = cleanenv.ReadConfig("config.yml", config)
 	})
 
-	return config
+	if err != nil {
+		return nil, err
+	}
+
+	return config, nil
 }
