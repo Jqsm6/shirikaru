@@ -1,0 +1,14 @@
+server:
+  Host: "localhost"
+  Port: "8080"
+  LoggingLevel: "debug"
+  ReadTimeout: "15s"
+  WriteTimeout: "15s"
+
+postgres:
+  PostgresqlHost: "localhost"
+  PostgresqlPort: "5432"
+  PostgresqlUser: "postgres"
+  PostgresqlPassword: "postgres"
+  PostgresqlDbname: "anime_db"
+  PgDriver: "pgx"
