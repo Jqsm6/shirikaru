@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
-	"shirikaru/internal/anime"
 
 	"github.com/jmoiron/sqlx"
 
+	"shirikaru/internal/anime"
 	"shirikaru/internal/model"
 )
 
@@ -37,6 +37,17 @@ func (r *animeRepo) GetByID(ctx context.Context, id int) (*model.Anime, error) {
 	}
 
 	return &a, nil
+}
+
+func (r *animeRepo) GetByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
+	var animeList []*model.Anime
+
+	err := r.db.SelectContext(ctx, &animeList, getAnimeByTitle, "%"+title+"%")
+	if err != nil {
+		return nil, err
+	}
+
+	return animeList, nil
 }
 
 func (r *animeRepo) Delete(ctx context.Context, id int) error {

@@ -39,6 +39,16 @@ func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*model.Anime, err
 	return model, nil
 }
 
+func (aus *animeUseCase) GetByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
+	modelList, err := aus.repo.GetByTitle(ctx, title)
+	if err != nil {
+		log.Err(err).Msg("")
+		return nil, err
+	}
+
+	return modelList, nil
+}
+
 func (aus *animeUseCase) Delete(ctx context.Context, id int) error {
 	err := aus.repo.Delete(ctx, id)
 	if err != nil {

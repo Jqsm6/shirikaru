@@ -2,13 +2,13 @@ package http
 
 import (
 	"net/http"
-	"shirikaru/pkg/logger"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 
 	"shirikaru/internal/anime"
 	"shirikaru/internal/model"
+	"shirikaru/pkg/logger"
 )
 
 type animeHandlers struct {
@@ -54,6 +54,23 @@ func (ah *animeHandlers) GetByID() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, anime)
+	}
+}
+
+func (ah *animeHandlers) GetByTitle() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		title := c.Param("title")
+
+		animeList, err := ah.animeUC.GetByTitle(c, title)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get anime"})
+			return
+		} else if animeList == nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "no anime found for this query"})
+			return
+		}
+
+		c.JSON(http.StatusOK, animeList)
 	}
 }
 

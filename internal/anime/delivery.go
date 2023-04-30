@@ -7,5 +7,6 @@ import (
 type Handlers interface {
 	Upload() gin.HandlerFunc
 	GetByID() gin.HandlerFunc
+	GetByTitle() gin.HandlerFunc
 	Delete() gin.HandlerFunc
 }

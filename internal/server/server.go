@@ -15,9 +15,7 @@ import (
 	"shirikaru/pkg/logger"
 )
 
-var (
-	server *http.Server
-)
+var server *http.Server
 
 type Server struct {
 	gin *gin.Engine

@@ -4,9 +4,9 @@ CREATE TABLE anime_list
 (
     anime_id SERIAL UNIQUE,
     title TEXT NOT NULL UNIQUE,
-    alternative_title TEXT,
+    alternativeTitle TEXT,
     description TEXT,
-    production_status TEXT NOT NULL,
+    productionStatus TEXT NOT NULL,
     picture TEXT,
     episode INT NOT NULL
 );
