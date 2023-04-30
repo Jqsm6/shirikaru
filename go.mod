@@ -8,6 +8,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/rs/zerolog v1.29.1
+	github.com/xlab/closer v1.1.0
 )
 
 require (
