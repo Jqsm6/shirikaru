@@ -29,6 +29,16 @@ func (aus *animeUseCase) Upload(ctx context.Context, anime *model.Anime) (int, e
 	return id, nil
 }
 
+func (aus *animeUseCase) GetAll(ctx context.Context) ([]*model.Anime, error) {
+	modelList, err := aus.repo.GetAll(ctx)
+	if err != nil {
+		log.Err(err).Msg("")
+		return nil, err
+	}
+
+	return modelList, nil
+}
+
 func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*model.Anime, error) {
 	model, err := aus.repo.GetByID(ctx, id)
 	if err != nil {
@@ -39,8 +49,8 @@ func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*model.Anime, err
 	return model, nil
 }
 
-func (aus *animeUseCase) GetByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
-	modelList, err := aus.repo.GetByTitle(ctx, title)
+func (aus *animeUseCase) SearchByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
+	modelList, err := aus.repo.SearchByTitle(ctx, title)
 	if err != nil {
 		log.Err(err).Msg("")
 		return nil, err

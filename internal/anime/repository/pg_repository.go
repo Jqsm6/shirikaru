@@ -28,6 +28,17 @@ func (r *animeRepo) Upload(ctx context.Context, a *model.DBAnime) (int, error) {
 	return id, nil
 }
 
+func (r *animeRepo) GetAll(ctx context.Context) ([]*model.Anime, error) {
+	var animeList []*model.Anime
+
+	err := r.db.SelectContext(ctx, &animeList, getAnimeAll)
+	if err != nil {
+		return nil, err
+	}
+
+	return animeList, nil
+}
+
 func (r *animeRepo) GetByID(ctx context.Context, id int) (*model.Anime, error) {
 	var a model.Anime
 	err := r.db.QueryRowContext(ctx, getAnimeByID, id).Scan(&a.ID, &a.Title, &a.AlternativeTitle, &a.Description, &a.ProductionStatus,
@@ -39,10 +50,10 @@ func (r *animeRepo) GetByID(ctx context.Context, id int) (*model.Anime, error) {
 	return &a, nil
 }
 
-func (r *animeRepo) GetByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
+func (r *animeRepo) SearchByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
 	var animeList []*model.Anime
 
-	err := r.db.SelectContext(ctx, &animeList, getAnimeByTitle, "%"+title+"%")
+	err := r.db.SelectContext(ctx, &animeList, searchAnimeByTitle, "%"+title+"%")
 	if err != nil {
 		return nil, err
 	}

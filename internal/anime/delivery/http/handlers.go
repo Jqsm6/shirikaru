@@ -29,13 +29,25 @@ func (ah *animeHandlers) Upload() gin.HandlerFunc {
 			return
 		}
 
-		id, err := ah.animeUC.Upload(c, anime)
+		id, err := ah.animeUC.Upload(c.Request.Context(), anime)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to upload anime"})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"status": "ok", "id": id})
+		c.JSON(http.StatusCreated, gin.H{"id": id})
+	}
+}
+
+func (ah *animeHandlers) GetAll() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		animeList, err := ah.animeUC.GetAll(c.Request.Context())
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get anime"})
+			return
+		}
+
+		c.JSON(http.StatusOK, animeList)
 	}
 }
 
@@ -47,7 +59,7 @@ func (ah *animeHandlers) GetByID() gin.HandlerFunc {
 			return
 		}
 
-		anime, err := ah.animeUC.GetByID(c, id)
+		anime, err := ah.animeUC.GetByID(c.Request.Context(), id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get anime"})
 			return
@@ -57,11 +69,11 @@ func (ah *animeHandlers) GetByID() gin.HandlerFunc {
 	}
 }
 
-func (ah *animeHandlers) GetByTitle() gin.HandlerFunc {
+func (ah *animeHandlers) SearchByTitle() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		title := c.Param("title")
 
-		animeList, err := ah.animeUC.GetByTitle(c, title)
+		animeList, err := ah.animeUC.SearchByTitle(c.Request.Context(), title)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get anime"})
 			return
@@ -82,12 +94,12 @@ func (ah *animeHandlers) Delete() gin.HandlerFunc {
 			return
 		}
 
-		err = ah.animeUC.Delete(c, id)
+		err = ah.animeUC.Delete(c.Request.Context(), id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete anime"})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"status:": "ok"})
+		c.JSON(http.StatusNoContent, gin.H{})
 	}
 }

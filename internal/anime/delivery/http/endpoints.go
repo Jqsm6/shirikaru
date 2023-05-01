@@ -1,8 +1,9 @@
 package http
 
 const (
-	upload     = "/upload"
-	getByID    = "/id/:id"
-	getByTitle = "/title/:title"
-	delete     = "/:id"
+	upload        = "/"
+	getAll        = "/"
+	getByID       = "/:id"
+	searchByTitle = "/search/:title"
+	delete        = "/:id"
 )
