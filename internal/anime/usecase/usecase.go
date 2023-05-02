@@ -6,7 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"shirikaru/internal/anime"
-	"shirikaru/internal/model"
+	"shirikaru/internal/models"
 	"shirikaru/pkg/logger"
 )
 
@@ -19,17 +19,17 @@ func NewAnimeUseCase(repo anime.Repository, log *logger.Logger) anime.UseCase {
 	return &animeUseCase{repo: repo, log: log}
 }
 
-func (aus *animeUseCase) Upload(ctx context.Context, anime *model.Anime) (int, error) {
+func (aus *animeUseCase) Upload(ctx context.Context, anime *models.Anime) (int, error) {
 	id, err := aus.repo.Upload(ctx, anime.ToDB())
 	if err != nil {
 		log.Err(err).Msg("")
-		return 0, err
+		return id, err
 	}
 
 	return id, nil
 }
 
-func (aus *animeUseCase) GetAll(ctx context.Context) ([]*model.Anime, error) {
+func (aus *animeUseCase) GetAll(ctx context.Context) ([]*models.Anime, error) {
 	modelList, err := aus.repo.GetAll(ctx)
 	if err != nil {
 		log.Err(err).Msg("")
@@ -39,7 +39,7 @@ func (aus *animeUseCase) GetAll(ctx context.Context) ([]*model.Anime, error) {
 	return modelList, nil
 }
 
-func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*model.Anime, error) {
+func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*models.Anime, error) {
 	model, err := aus.repo.GetByID(ctx, id)
 	if err != nil {
 		log.Err(err).Msg("")
@@ -49,7 +49,7 @@ func (aus *animeUseCase) GetByID(ctx context.Context, id int) (*model.Anime, err
 	return model, nil
 }
 
-func (aus *animeUseCase) SearchByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
+func (aus *animeUseCase) SearchByTitle(ctx context.Context, title string) ([]*models.Anime, error) {
 	modelList, err := aus.repo.SearchByTitle(ctx, title)
 	if err != nil {
 		log.Err(err).Msg("")

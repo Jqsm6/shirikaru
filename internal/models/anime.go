@@ -1,7 +1,7 @@
-package model
+package models
 
 type Anime struct {
-	ID               int    `json:"id"`
+	AnimeID          int    `json:"animeID"`
 	Title            string `json:"title"`
 	AlternativeTitle string `json:"alternativeTitle"`
 	Description      string `json:"description"`
@@ -11,6 +11,7 @@ type Anime struct {
 }
 
 type DBAnime struct {
+	AnimeID          int    `pg:"animeID"`
 	Title            string `pg:"title"`
 	AlternativeTitle string `pg:"alternativeTitle"`
 	Description      string `pg:"description"`
@@ -21,6 +22,7 @@ type DBAnime struct {
 
 func (a *Anime) ToDB() *DBAnime {
 	return &DBAnime{
+		AnimeID:          a.AnimeID,
 		Title:            a.Title,
 		AlternativeTitle: a.AlternativeTitle,
 		Description:      a.Description,

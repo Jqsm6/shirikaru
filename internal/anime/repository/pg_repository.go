@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	"shirikaru/internal/anime"
-	"shirikaru/internal/model"
+	"shirikaru/internal/models"
 )
 
 type animeRepo struct {
@@ -17,19 +17,19 @@ func NewAnimeRepository(db *sqlx.DB) anime.Repository {
 	return &animeRepo{db: db}
 }
 
-func (r *animeRepo) Upload(ctx context.Context, a *model.DBAnime) (int, error) {
+func (r *animeRepo) Upload(ctx context.Context, a *models.DBAnime) (int, error) {
 	var id int
-	err := r.db.QueryRowContext(ctx, uploadAnime, a.Title, a.AlternativeTitle, a.Description,
+	err := r.db.QueryRowContext(ctx, uploadAnime, a.AnimeID, a.Title, a.AlternativeTitle, a.Description,
 		a.ProductionStatus, a.Picture, a.Episode).Scan(&id)
 	if err != nil {
-		return 0, err
+		return id, err
 	}
 
 	return id, nil
 }
 
-func (r *animeRepo) GetAll(ctx context.Context) ([]*model.Anime, error) {
-	var animeList []*model.Anime
+func (r *animeRepo) GetAll(ctx context.Context) ([]*models.Anime, error) {
+	var animeList []*models.Anime
 
 	err := r.db.SelectContext(ctx, &animeList, getAnimeAll)
 	if err != nil {
@@ -39,9 +39,9 @@ func (r *animeRepo) GetAll(ctx context.Context) ([]*model.Anime, error) {
 	return animeList, nil
 }
 
-func (r *animeRepo) GetByID(ctx context.Context, id int) (*model.Anime, error) {
-	var a model.Anime
-	err := r.db.QueryRowContext(ctx, getAnimeByID, id).Scan(&a.ID, &a.Title, &a.AlternativeTitle, &a.Description, &a.ProductionStatus,
+func (r *animeRepo) GetByID(ctx context.Context, id int) (*models.Anime, error) {
+	var a models.Anime
+	err := r.db.QueryRowContext(ctx, getAnimeByID, id).Scan(&a.AnimeID, &a.Title, &a.AlternativeTitle, &a.Description, &a.ProductionStatus,
 		&a.Picture, &a.Episode)
 	if err != nil {
 		return nil, err
@@ -50,8 +50,8 @@ func (r *animeRepo) GetByID(ctx context.Context, id int) (*model.Anime, error) {
 	return &a, nil
 }
 
-func (r *animeRepo) SearchByTitle(ctx context.Context, title string) ([]*model.Anime, error) {
-	var animeList []*model.Anime
+func (r *animeRepo) SearchByTitle(ctx context.Context, title string) ([]*models.Anime, error) {
+	var animeList []*models.Anime
 
 	err := r.db.SelectContext(ctx, &animeList, searchAnimeByTitle, "%"+title+"%")
 	if err != nil {

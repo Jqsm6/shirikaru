@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS anime_list CASCADE;
 
 CREATE TABLE anime_list
 (
-    anime_id SERIAL UNIQUE,
+    animeID SERIAL,
     title TEXT NOT NULL UNIQUE,
     alternativeTitle TEXT,
     description TEXT,
@@ -12,4 +12,4 @@ CREATE TABLE anime_list
 );
 
 CREATE INDEX IF NOT EXISTS anime_list_idx
-    ON anime_list (anime_id);
+    ON anime_list (animeID);
